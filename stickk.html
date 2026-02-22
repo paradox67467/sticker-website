@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAKURA STICKERS — Anime Sticker Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --paper:   #FAF7F2;
+    --paper2:  #F3EDE3;
+    --paper3:  #EDE4D6;
+    --ink:     #1C1410;
+    --ink2:    #3A2E24;
+    --ink3:    #6B5C4E;
+    --rose:    #D4607A;
+    --rose-lt: #F0A0B2;
+    --matcha:  #7A9E7E;
+    --gold:    #C89B4A;
+    --blush:   #F5D5DC;
+    --sage:    #C8D8C0;
+    --mist:    rgba(28,20,16,0.06);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--paper2); }
+::-webkit-scrollbar-thumb { background: var(--rose); border-radius: 4px; }
+
+/* ===== CURSOR ===== */
+.cursor {
+    position: fixed; z-index: 9999; pointer-events: none;
+    width: 10px; height: 10px;
+    background: var(--rose);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s;
+}
+.cursor-trail {
+    position: fixed; z-index: 9998; pointer-events: none;
+    width: 32px; height: 32px;
+    border: 1.5px solid var(--rose-lt);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: all 0.35s ease;
+    opacity: 0.5;
+}
+
+/* ===== PAPER TEXTURE ===== */
+body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 300px;
+}
+
+/* ===== NAV ===== */
+nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    padding: 20px 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.4s;
+}
+nav.scrolled {
+    background: rgba(250,247,242,0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--paper3);
+    padding: 14px 56px;
+}
+.nav-logo {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+}
+.nav-logo .logo-sakura {
+    color: var(--rose);
+    font-size: 20px;
+    animation: spin 6s linear infinite;
+    display: inline-block;
+}
+@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink3);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute; bottom: -3px; left: 0;
+    width: 0; height: 1.5px;
+    background: var(--rose);
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+.nav-links a:hover { color: var(--rose); }
+.nav-links a:hover::after { width: 100%; }
+.nav-right { display: flex; gap: 18px; align-items: center; }
+.nav-btn-icon {
+    font-size: 18px; cursor: pointer;
+    transition: transform 0.3s;
+    color: var(--ink2);
+    position: relative;
+}
+.nav-btn-icon:hover { transform: scale(1.15); color: var(--rose); }
+.cart-pip {
+    position: absolute; top: -5px; right: -7px;
+    background: var(--rose);
+    color: white;
+    font-size: 8px; font-weight: 900;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* ===== HERO ===== */
+.hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 56px 80px;
+    position: relative;
+    overflow: hidden;
+    gap: 40px;
+}
+/* Ink wash background shapes */
+.hero-wash {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+}
+.wash-circle {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px);
+}
+.wash-1 { width: 500px; height: 500px; background: rgba(212,96,122,0.08); top: -100px; right: -100px; }
+.wash-2 { width: 400px; height: 400px; background: rgba(122,158,126,0.07); bottom: -80px; left: -80px; }
+.wash-3 { width: 300px; height: 300px; background: rgba(200,155,74,0.06); top: 30%; left: 30%; }
+
+/* Manga half-tone dots pattern */
+.hero-dots {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    opacity: 0.035;
+    background-image: radial-gradient(circle, #1C1410 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.hero-left { position: relative; z-index: 2; }
+.hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 16px;
+    background: var(--blush);
+    border: 1px solid var(--rose-lt);
+    border-radius: 100px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease 0.2s both;
+}
+.hero-title {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(52px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    color: var(--ink);
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease 0.4s both;
+}
+.hero-title .accent { color: var(--rose); }
+.hero-title .accent2 { color: var(--matcha); }
+.hero-sub {
+    font-family: 'Klee One', cursive;
+    font-size: 17px; font-weight: 400;
+    color: var(--ink3);
+    line-height: 1.8;
+    max-width: 380px;
+    margin-bottom: 44px;
+    animation: fadeUp 0.8s ease 0.6s both;
+}
+.hero-actions {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.8s both;
+}
+.btn-filled {
+    padding: 14px 34px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    border: none; border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none; display: inline-block;
+    position: relative; overflow: hidden;
+}
+.btn-filled::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--rose);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s ease;
+}
+.btn-filled:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,20,16,0.2); }
+.btn-filled:hover::before { transform: scaleX(1); }
+.btn-filled span { position: relative; z-index: 1; }
+.btn-soft {
+    padding: 14px 34px;
+    background: transparent;
+    color: var(--ink2);
+    border: 1.5px solid var(--paper3);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none; display: inline-block;
+}
+.btn-soft:hover {
+    border-color: var(--rose-lt);
+    color: var(--rose);
+    transform: translateY(-2px);
+}
+
+/* Hero right — sticker showcase */
+.hero-right {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+}
+.hero-sticker-cluster {
+    position: relative;
+    width: 480px; height: 480px;
+}
+.cluster-ring {
+    position: absolute; top: 50%; left: 50%;
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    border: 1px dashed rgba(212,96,122,0.2);
+    transform: translate(-50%,-50%);
+    animation: slowSpin 30s linear infinite;
+}
+@keyframes slowSpin { from{transform:translate(-50%,-50%) rotate(0)} to{transform:translate(-50%,-50%) rotate(360deg)} }
+.hero-main-sticker {
+    position: absolute; top:50%; left:50%;
+    transform: translate(-50%,-50%);
+    width: 200px; height: 200px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(28,20,16,0.12), 0 4px 12px rgba(28,20,16,0.06);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    animation: float0 4s ease-in-out infinite;
+}
+.hero-main-sticker img { width: 90%; height: 90%; object-fit: contain; }
+@keyframes float0 { 0%,100%{transform:translate(-50%,-50%) translateY(0)} 50%{transform:translate(-50%,-50%) translateY(-12px)} }
+
+.orbit-sticker {
+    position: absolute;
+    width: 90px; height: 90px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(28,20,16,0.1);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    font-size: 38px;
+}
+.orbit-sticker img { width: 80%; height: 80%; object-fit: contain; }
+.os1 { top: 10px; left: 50%; transform: translateX(-50%); animation: float1 3.5s ease-in-out infinite; }
+.os2 { top: 50%; right: 10px; transform: translateY(-50%); animation: float2 4s ease-in-out infinite 0.5s; }
+.os3 { bottom: 10px; left: 50%; transform: translateX(-50%); animation: float1 4.5s ease-in-out infinite 1s; }
+.os4 { top: 50%; left: 10px; transform: translateY(-50%); animation: float2 3.8s ease-in-out infinite 1.5s; }
+.os5 { top: 15%; right: 15%; animation: float1 4.2s ease-in-out infinite 0.3s; }
+.os6 { bottom: 15%; left: 15%; animation: float2 3.6s ease-in-out infinite 0.8s; }
+
+@keyframes float1 { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-8px)} }
+@keyframes float2 { 0%,100%{transform:translateY(-50%) translateX(0)} 50%{transform:translateY(-50%) translateX(-8px)} }
+
+.hero-stats {
+    display: flex; gap: 40px; z-index: 2;
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--paper3);
+    animation: fadeUp 0.8s ease 1s both;
+}
+.stat-n {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 32px; letter-spacing: 1px;
+    color: var(--ink);
+}
+.stat-l {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink3);
+    margin-top: 2px;
+}
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===== MARQUEE ===== */
+.marquee-strip {
+    background: var(--ink);
+    padding: 11px 0;
+    overflow: hidden; white-space: nowrap;
+    position: relative; z-index: 5;
+}
+.marquee-inner {
+    display: inline-block;
+    animation: mScroll 22s linear infinite;
+}
+.marquee-inner span {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--paper2);
+    margin: 0 32px;
+    opacity: 0.7;
+}
+.marquee-inner .m-rose { color: var(--rose-lt); opacity: 1; }
+@keyframes mScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ===== SECTION COMMONS ===== */
+section { padding: 96px 56px; position: relative; z-index: 5; }
+.s-eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 10px;
+}
+.s-eyebrow::after { content: ''; flex: 0 0 32px; height: 1px; background: var(--rose-lt); }
+.s-title {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(36px, 4.5vw, 60px);
+    letter-spacing: 2px; line-height: 1;
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+
+/* ===== FILTER TABS ===== */
+.filter-row {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-top: 36px; margin-bottom: 48px;
+}
+.f-tab {
+    padding: 8px 22px;
+    background: transparent;
+    border: 1.5px solid var(--paper3);
+    color: var(--ink3);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 100px; cursor: pointer;
+    transition: all 0.25s;
+}
+.f-tab:hover { border-color: var(--rose-lt); color: var(--rose); background: var(--blush); }
+.f-tab.active {
+    background: var(--ink); color: var(--paper);
+    border-color: var(--ink);
+}
+
+/* ===== STICKER GRID ===== */
+.sgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 20px;
+}
+.s-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(28,20,16,0.07);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease, border-color 0.25s;
+    opacity: 0; transform: translateY(20px);
+    display: flex; flex-direction: column;
+}
+.s-card.visible {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease, border-color 0.25s;
+}
+.s-card:hover {
+    transform: translateY(-6px) rotate(-0.4deg);
+    box-shadow: 0 16px 48px rgba(28,20,16,0.1), 0 4px 12px rgba(28,20,16,0.06);
+    border-color: rgba(212,96,122,0.2);
+}
+.s-img-box {
+    width: 100%; aspect-ratio: 1;
+    background: var(--paper2);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+}
+/* Subtle dot pattern in card background */
+.s-img-box::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(28,20,16,0.04) 1px, transparent 1px);
+    background-size: 14px 14px;
+}
+.s-img {
+    width: 82%; height: 82%;
+    object-fit: contain;
+    position: relative; z-index: 2;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    filter: drop-shadow(0 6px 16px rgba(28,20,16,0.15));
+}
+.s-card:hover .s-img { transform: scale(1.1) rotate(2deg); }
+.s-fallback {
+    font-size: 64px;
+    position: absolute; inset: 0;
+    display: none; align-items: center; justify-content: center;
+    z-index: 2;
+}
+.s-badge {
+    position: absolute; top: 10px; left: 10px; z-index: 4;
+    padding: 3px 10px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 100px;
+}
+.b-hot  { background: var(--blush); color: var(--rose); border: 1px solid var(--rose-lt); }
+.b-new  { background: var(--sage);  color: var(--matcha); border: 1px solid rgba(122,158,126,0.4); }
+.b-ltd  { background: #FEF3D8; color: var(--gold); border: 1px solid rgba(200,155,74,0.4); }
+
+/* Quick-add on hover: handled by s-add button growing */
+
+.s-info { padding: 14px 16px 16px; }
+.s-num  {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink3); opacity: 0.5; margin-bottom: 4px;
+}
+.s-name {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--ink); margin-bottom: 3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.s-series {
+    font-family: 'Klee One', cursive;
+    font-size: 11px;
+    color: var(--ink3); margin-bottom: 10px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.s-bottom { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.s-price {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 20px; letter-spacing: 1px;
+    color: var(--rose);
+    flex-shrink: 0;
+}
+.s-add {
+    height: 32px;
+    background: var(--paper2);
+    border: 1.5px solid var(--paper3);
+    color: var(--ink2);
+    border-radius: 6px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 34px;
+}
+.s-add:hover { max-width: 34px; }
+.s-card:hover .s-add {
+    max-width: 110px;
+    background: var(--rose);
+    border-color: var(--rose);
+    color: white;
+    padding: 0 14px;
+}
+
+/* ===== PACKS ===== */
+.packs-bg { background: var(--paper2); }
+.packs-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; margin-top: 56px;
+}
+.pack-card {
+    background: white;
+    border-radius: 18px;
+    border: 1px solid rgba(28,20,16,0.07);
+    padding: 40px;
+    position: relative; overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.pack-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 64px rgba(28,20,16,0.1);
+}
+.pack-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.pack-card.pk1::before { background: linear-gradient(90deg, var(--rose-lt), var(--rose)); }
+.pack-card.pk2::before { background: linear-gradient(90deg, var(--matcha), var(--gold)); }
+
+.pack-icons {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px;
+}
+.pk-icon {
+    width: 52px; height: 52px;
+    background: var(--paper2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    border: 1px solid var(--paper3);
+    transition: transform 0.3s;
+}
+.pack-card:hover .pk-icon:nth-child(odd)  { transform: translateY(-4px) rotate(-3deg); }
+.pack-card:hover .pk-icon:nth-child(even) { transform: translateY(4px) rotate(3deg); }
+
+.pk-name {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 30px; letter-spacing: 2px;
+    color: var(--ink); margin-bottom: 8px;
+}
+.pk-desc {
+    font-family: 'Klee One', cursive;
+    font-size: 14px; color: var(--ink3);
+    line-height: 1.7; margin-bottom: 24px;
+}
+.pk-pricing {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+}
+.pk-price {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 42px; letter-spacing: 1px;
+    color: var(--rose);
+}
+.pk-old {
+    font-size: 16px; font-weight: 700;
+    color: var(--ink3); opacity: 0.4;
+    text-decoration: line-through;
+}
+.pk-save {
+    padding: 3px 12px;
+    background: var(--blush);
+    border: 1px solid var(--rose-lt);
+    border-radius: 100px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--rose);
+}
+/* Watercolour blob decoration */
+.pk-blob {
+    position: absolute; bottom: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+}
+.pk1 .pk-blob { background: rgba(212,96,122,0.07); }
+.pk2 .pk-blob { background: rgba(122,158,126,0.07); }
+
+/* ===== TESTIMONIALS ===== */
+.tgrid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 18px; margin-top: 56px;
+}
+.t-card {
+    background: white;
+    border-radius: 14px;
+    padding: 28px;
+    border: 1px solid rgba(28,20,16,0.07);
+    position: relative;
+    transition: transform 0.35s ease, box-shadow 0.3s;
+}
+.t-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(28,20,16,0.08);
+}
+.t-stars { font-size: 13px; color: var(--gold); letter-spacing: 2px; margin-bottom: 12px; }
+.t-text {
+    font-family: 'Klee One', cursive;
+    font-size: 14px; line-height: 1.8;
+    color: var(--ink3); margin-bottom: 20px;
+    font-style: italic;
+}
+.t-author { display: flex; align-items: center; gap: 12px; }
+.t-avi {
+    width: 36px; height: 36px;
+    background: var(--blush);
+    border-radius: 50%;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--rose-lt);
+}
+.t-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.t-handle { font-size: 11px; color: var(--rose); font-weight: 700; }
+/* ink mark quote */
+.t-card::before {
+    content: '〝';
+    font-family: serif;
+    font-size: 56px; line-height: 1;
+    color: var(--paper3);
+    position: absolute; top: 12px; right: 18px;
+}
+
+/* ===== NEWSLETTER ===== */
+.nl-section {
+    background: var(--ink);
+    padding: 96px 56px;
+    text-align: center;
+    position: relative; overflow: hidden;
+}
+.nl-blob1 {
+    position: absolute; top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    background: rgba(212,96,122,0.1);
+    border-radius: 50%; filter: blur(60px);
+    pointer-events: none;
+}
+.nl-blob2 {
+    position: absolute; bottom: -80px; left: -80px;
+    width: 250px; height: 250px;
+    background: rgba(122,158,126,0.08);
+    border-radius: 50%; filter: blur(60px);
+    pointer-events: none;
+}
+.nl-title {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(36px, 4vw, 58px);
+    letter-spacing: 3px;
+    color: var(--paper);
+    margin-bottom: 12px;
+    position: relative;
+}
+.nl-title .nl-accent { color: var(--rose-lt); }
+.nl-sub {
+    font-family: 'Klee One', cursive;
+    font-size: 16px; color: rgba(250,247,242,0.45);
+    margin-bottom: 40px; position: relative;
+}
+.nl-form {
+    display: flex; max-width: 440px; margin: 0 auto;
+    position: relative;
+}
+.nl-form input {
+    flex: 1;
+    padding: 15px 22px;
+    background: rgba(250,247,242,0.07);
+    border: 1px solid rgba(250,247,242,0.12);
+    border-right: none;
+    color: var(--paper);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.nl-form input:focus { border-color: var(--rose-lt); }
+.nl-form input::placeholder { color: rgba(250,247,242,0.25); }
+.nl-form button {
+    padding: 15px 26px;
+    background: var(--rose);
+    color: white;
+    border: none;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.nl-form button:hover { background: #c04d65; }
+
+/* ===== FOOTER ===== */
+footer {
+    background: var(--paper2);
+    border-top: 1px solid var(--paper3);
+    padding: 70px 56px 36px;
+}
+.footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--paper3);
+}
+.f-logo {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 26px; letter-spacing: 2px;
+    color: var(--ink); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+}
+.f-logo .fl-rose { color: var(--rose); }
+.f-desc {
+    font-family: 'Klee One', cursive;
+    font-size: 14px; color: var(--ink3);
+    line-height: 1.7; margin-bottom: 24px;
+}
+.f-socials { display: flex; gap: 10px; }
+.f-soc {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1px solid var(--paper3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; cursor: pointer;
+    transition: all 0.25s;
+}
+.f-soc:hover { background: var(--rose); border-color: var(--rose); transform: translateY(-2px); }
+.fc-title {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 14px; letter-spacing: 2px;
+    color: var(--ink); margin-bottom: 18px;
+}
+.fc-links { list-style: none; }
+.fc-links li { margin-bottom: 10px; }
+.fc-links a {
+    font-size: 13px; font-weight: 400;
+    color: var(--ink3); text-decoration: none;
+    transition: color 0.25s;
+}
+.fc-links a:hover { color: var(--rose); }
+.f-bottom {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.f-copy { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--ink3); opacity: 0.5; }
+.f-pays { display: flex; gap: 8px; }
+.f-pay {
+    padding: 4px 10px;
+    border: 1px solid var(--paper3);
+    border-radius: 3px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--ink3); opacity: 0.5;
+}
+
+/* ===== CART ===== */
+.cart-overlay {
+    position: fixed; inset: 0;
+    background: rgba(28,20,16,0.4);
+    z-index: 400;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s;
+    backdrop-filter: blur(4px);
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-panel {
+    position: fixed; top: 0; right: -440px; bottom: 0;
+    width: 420px;
+    background: var(--paper);
+    border-left: 1px solid var(--paper3);
+    z-index: 500;
+    transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+    box-shadow: -20px 0 60px rgba(28,20,16,0.08);
+}
+.cart-panel.open { right: 0; }
+.cart-head {
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--paper3);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.cart-head h3 {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 22px; letter-spacing: 2px; color: var(--ink);
+}
+.cart-cls {
+    background: none; border: none; color: var(--ink3);
+    font-size: 20px; cursor: pointer; transition: color 0.25s;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+}
+.cart-cls:hover { color: var(--rose); background: var(--blush); }
+.cart-body { flex: 1; overflow-y: auto; padding: 18px 28px; }
+.c-item {
+    display: flex; gap: 14px; align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--paper2);
+}
+.c-thumb {
+    width: 62px; height: 62px;
+    border-radius: 10px;
+    background: var(--paper2);
+    border: 1px solid var(--paper3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; overflow: hidden;
+    font-size: 30px;
+}
+.c-thumb img { width: 90%; height: 90%; object-fit: contain; }
+.c-info { flex: 1; }
+.c-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.c-price {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 16px; color: var(--rose);
+}
+.c-qty { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.q-btn {
+    width: 24px; height: 24px;
+    background: var(--paper2); border: 1px solid var(--paper3);
+    color: var(--ink); border-radius: 50%;
+    font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+}
+.q-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.q-num { font-size: 13px; font-weight: 700; min-width: 18px; text-align: center; }
+.c-rm {
+    background: none; border: none; cursor: pointer;
+    color: var(--ink3); opacity: 0.3;
+    font-size: 16px; transition: opacity 0.2s, color 0.2s;
+    padding: 4px;
+}
+.c-rm:hover { opacity: 1; color: var(--rose); }
+.c-empty {
+    text-align: center; padding: 60px 20px;
+    color: var(--ink3); opacity: 0.4;
+}
+.c-empty span { display: block; font-size: 44px; margin-bottom: 10px; }
+.c-empty p { font-family: 'Klee One', cursive; font-size: 15px; }
+.cart-foot {
+    padding: 20px 28px;
+    border-top: 1px solid var(--paper3);
+}
+.c-tot {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+}
+.c-tot-lbl { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink3); }
+.c-tot-num {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 26px; letter-spacing: 1px; color: var(--rose);
+}
+.c-checkout {
+    width: 100%; padding: 15px;
+    background: var(--ink); color: var(--paper);
+    border: none; border-radius: 4px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.c-checkout:hover { background: var(--rose); }
+
+/* ===== MODAL ===== */
+.modal-ov {
+    position: fixed; inset: 0;
+    background: rgba(28,20,16,0.5);
+    z-index: 600;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(6px);
+}
+.modal-ov.open { opacity: 1; pointer-events: all; }
+.modal-box {
+    background: var(--paper);
+    border-radius: 20px;
+    border: 1px solid var(--paper3);
+    padding: 44px;
+    max-width: 460px; width: 90%;
+    position: relative;
+    transform: scale(0.92) translateY(10px);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    text-align: center;
+    box-shadow: 0 40px 100px rgba(28,20,16,0.15);
+}
+.modal-ov.open .modal-box { transform: scale(1) translateY(0); }
+.modal-img-wrap {
+    width: 170px; height: 170px;
+    background: var(--paper2);
+    border-radius: 16px;
+    margin: 0 auto 24px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--paper3);
+    animation: float0 3.5s ease-in-out infinite;
+}
+.modal-img-wrap img { width: 90%; height: 90%; object-fit: contain; }
+.modal-cls {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--paper2); border: none;
+    width: 30px; height: 30px; border-radius: 50%;
+    color: var(--ink3); font-size: 16px; cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+}
+.modal-cls:hover { background: var(--blush); color: var(--rose); }
+.modal-name {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 28px; letter-spacing: 2px; color: var(--ink);
+    margin-bottom: 4px;
+}
+.modal-series {
+    font-family: 'Klee One', cursive;
+    font-size: 13px; color: var(--rose);
+    font-weight: 600; margin-bottom: 14px;
+}
+.modal-desc {
+    font-family: 'Klee One', cursive;
+    font-size: 14px; color: var(--ink3);
+    line-height: 1.7; margin-bottom: 24px;
+}
+.modal-price {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 38px; letter-spacing: 1px;
+    color: var(--rose); margin-bottom: 24px;
+}
+
+/* ===== TOAST ===== */
+.toast {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 11px 26px;
+    border-radius: 100px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1px;
+    z-index: 1000; pointer-events: none;
+    opacity: 0; transition: all 0.3s ease;
+    border-left: 3px solid var(--rose);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ===== REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    nav { padding: 16px 24px; }
+    nav.scrolled { padding: 12px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; min-height: auto; }
+    .hero-right { display: none; }
+    section { padding: 64px 24px; }
+    .packs-bg { padding: 64px 24px; }
+    .nl-section { padding: 64px 24px; }
+    footer { padding: 56px 24px 28px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .sgrid { grid-template-columns: repeat(2,1fr); }
+    .packs-grid { grid-template-columns: 1fr; }
+    .tgrid { grid-template-columns: 1fr; }
+    .cart-panel { width: 100%; right: -100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="ctrail"></div>
+
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modalOv" onclick="closeMod(event)">
+    <div class="modal-box">
+        <button class="modal-cls" onclick="closeModDirect()">✕</button>
+        <div class="modal-img-wrap">
+            <img id="modImg" src="" alt="" onerror="this.style.display='none'">
+        </div>
+        <div class="modal-name" id="modName"></div>
+        <div class="modal-series" id="modSeries"></div>
+        <div class="modal-desc" id="modDesc"></div>
+        <div class="modal-price" id="modPrice"></div>
+        <button class="btn-filled" style="width:100%" onclick="addModCart()">
+            <span>Add to Cart</span>
+        </button>
+    </div>
+</div>
+
+<!-- CART -->
+<div class="cart-overlay" id="cartOv" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-head">
+        <h3>YOUR CART</h3>
+        <button class="cart-cls" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-body" id="cartBody"></div>
+    <div class="cart-foot" id="cartFoot" style="display:none">
+        <div class="c-tot">
+            <span class="c-tot-lbl">Total</span>
+            <span class="c-tot-num" id="cartTot">₹0</span>
+        </div>
+        <button class="c-checkout" onclick="showToast('✨ Proceeding to checkout!')">Checkout →</button>
+    </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+    <a href="#" class="nav-logo">
+        <span class="logo-sakura">✿</span> SAKURA STICKERS
+    </a>
+    <ul class="nav-links">
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#packs">Packs</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+        <span class="nav-btn-icon" onclick="showToast('Search coming soon')">🔍</span>
+        <span class="nav-btn-icon" onclick="showToast('Account coming soon')">👤</span>
+        <span class="nav-btn-icon" onclick="toggleCart()" style="position:relative">
+            🛍
+            <span class="cart-pip" id="cartCount">0</span>
+        </span>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="hero-wash">
+        <div class="wash-circle wash-1"></div>
+        <div class="wash-circle wash-2"></div>
+        <div class="wash-circle wash-3"></div>
+    </div>
+    <div class="hero-dots"></div>
+
+    <div class="hero-left">
+        <div class="hero-tag">🌸 Spring Collection 2025</div>
+        <h1 class="hero-title">
+            ANIME<br>
+            <span class="accent">STICKER</span><br>
+            <span class="accent2">DROPS</span>
+        </h1>
+        <p class="hero-sub">21 hand-crafted premium anime stickers. Waterproof, UV-resistant, made for your world.</p>
+        <div class="hero-actions">
+            <a href="#shop" class="btn-filled"><span>Shop All 21 →</span></a>
+            <a href="#packs" class="btn-soft">Bundle Packs</a>
+        </div>
+        <div class="hero-stats">
+            <div><div class="stat-n">21</div><div class="stat-l">Designs</div></div>
+            <div><div class="stat-n">5K+</div><div class="stat-l">Sold</div></div>
+            <div><div class="stat-n">4.9★</div><div class="stat-l">Rating</div></div>
+        </div>
+    </div>
+
+    <div class="hero-right">
+        <div class="hero-sticker-cluster">
+            <div class="cluster-ring"></div>
+            <div class="hero-main-sticker">
+                <img src="1.png" alt="Sticker 1" onerror="this.style.display='none';this.parentNode.innerHTML+='🎌'">
+            </div>
+            <div class="orbit-sticker os1"><img src="3.png" alt="" onerror="this.style.display='none';this.parentNode.innerHTML+='🌸'"></div>
+            <div class="orbit-sticker os2"><img src="7.png" alt="" onerror="this.style.display='none';this.parentNode.innerHTML+='⚡'"></div>
+            <div class="orbit-sticker os3"><img src="12.png" alt="" onerror="this.style.display='none';this.parentNode.innerHTML+='🔥'"></div>
+            <div class="orbit-sticker os4"><img src="18.png" alt="" onerror="this.style.display='none';this.parentNode.innerHTML+='🌙'"></div>
+            <div class="orbit-sticker os5"><img src="5.png" alt="" onerror="this.style.display='none';this.parentNode.innerHTML+='💫'"></div>
+            <div class="orbit-sticker os6"><img src="15.png" alt="" onerror="this.style.display='none';this.parentNode.innerHTML+='🦊'"></div>
+        </div>
+    </div>
+
+
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+    <div class="marquee-inner">
+        <span class="m-rose">✿ New Drops</span>
+        <span>Premium Vinyl</span>
+        <span class="m-rose">✿ Waterproof</span>
+        <span>UV Resistant</span>
+        <span class="m-rose">✿ Free Sticker on Orders</span>
+        <span>21 Designs</span>
+        <span class="m-rose">✿ 4.9 Star Rated</span>
+        <span>Ships Pan-India</span>
+        <span class="m-rose">✿ New Drops</span>
+        <span>Premium Vinyl</span>
+        <span class="m-rose">✿ Waterproof</span>
+        <span>UV Resistant</span>
+        <span class="m-rose">✿ Free Sticker on Orders</span>
+        <span>21 Designs</span>
+        <span class="m-rose">✿ 4.9 Star Rated</span>
+        <span>Ships Pan-India</span>
+    </div>
+</div>
+
+<!-- SHOP -->
+<section id="shop">
+    <div class="reveal">
+        <div class="s-eyebrow">The Collection</div>
+        <h2 class="s-title">ALL 21 STICKERS</h2>
+    </div>
+    <div class="filter-row reveal">
+        <button class="f-tab active" onclick="doFilter('all',this)">All</button>
+        <button class="f-tab" onclick="doFilter('hot',this)">🌸 Popular</button>
+        <button class="f-tab" onclick="doFilter('new',this)">New In</button>
+        <button class="f-tab" onclick="doFilter('limited',this)">Limited</button>
+        <button class="f-tab" onclick="doFilter('glow',this)">Special</button>
+    </div>
+    <div class="sgrid" id="sgrid"></div>
+</section>
+
+<!-- PACKS -->
+<section class="packs-bg" id="packs">
+    <div class="reveal" style="text-align:center">
+        <div class="s-eyebrow" style="justify-content:center">Bundle & Save</div>
+        <h2 class="s-title">STICKER PACKS</h2>
+    </div>
+    <div class="packs-grid reveal">
+        <div class="pack-card pk1">
+            <div class="pk-blob"></div>
+            <div class="pack-icons">
+                <div class="pk-icon">🌸</div><div class="pk-icon">⚡</div>
+                <div class="pk-icon">🎌</div><div class="pk-icon">🌙</div><div class="pk-icon">⭐</div>
+            </div>
+            <div class="pk-name">STARTER PACK</div>
+            <div class="pk-desc">5 fan-favourite anime stickers. A perfect introduction — or a thoughtful gift. Premium waterproof vinyl.</div>
+            <div class="pk-pricing">
+                <div class="pk-price">₹199</div>
+                <div class="pk-old">₹349</div>
+                <div class="pk-save">SAVE 43%</div>
+            </div>
+            <button class="btn-filled" style="width:100%" onclick="showToast('Starter Pack added to cart! 🌸')">
+                <span>Add to Cart</span>
+            </button>
+        </div>
+        <div class="pack-card pk2">
+            <div class="pk-blob"></div>
+            <div class="pack-icons">
+                <div class="pk-icon">🎭</div><div class="pk-icon">🔥</div><div class="pk-icon">💎</div>
+                <div class="pk-icon">🌊</div><div class="pk-icon">⚔️</div><div class="pk-icon">🔮</div><div class="pk-icon">🦊</div>
+            </div>
+            <div class="pk-name">ULTIMATE PACK</div>
+            <div class="pk-desc">The full collection — all 21 stickers. Holographic finishes on select pieces. Ships in premium packaging.</div>
+            <div class="pk-pricing">
+                <div class="pk-price">₹699</div>
+                <div class="pk-old">₹1,299</div>
+                <div class="pk-save">SAVE 46%</div>
+            </div>
+            <button class="btn-filled" style="width:100%;background:var(--matcha)" onclick="showToast('Ultimate Pack added! ✨')">
+                <span>Get All 21 →</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+    <div class="reveal" style="text-align:center">
+        <div class="s-eyebrow" style="justify-content:center">Community</div>
+        <h2 class="s-title">FAN REVIEWS</h2>
+    </div>
+    <div class="tgrid">
+        <div class="t-card reveal">
+            <div class="t-stars">★★★★★</div>
+            <p class="t-text">Covered my laptop with these and got so many compliments. The colours are vivid and they haven't faded in 6 months!</p>
+            <div class="t-author">
+                <div class="t-avi">🌸</div>
+                <div><div class="t-name">Priya S.</div><div class="t-handle">@priya.otaku</div></div>
+            </div>
+        </div>
+        <div class="t-card reveal" style="transition-delay:0.1s">
+            <div class="t-stars">★★★★★</div>
+            <p class="t-text">Bought the Ultimate Pack and it was worth every rupee. Quality is genuinely insane. Survived my water bottle for months!</p>
+            <div class="t-author">
+                <div class="t-avi">⚡</div>
+                <div><div class="t-name">Arjun M.</div><div class="t-handle">@arjun.anime</div></div>
+            </div>
+        </div>
+        <div class="t-card reveal" style="transition-delay:0.2s">
+            <div class="t-stars">★★★★★</div>
+            <p class="t-text">Fast delivery, cute packaging and the stickers look exactly like the photos. My notebook looks like a manga panel now!</p>
+            <div class="t-author">
+                <div class="t-avi">🌙</div>
+                <div><div class="t-name">Sneha K.</div><div class="t-handle">@sneha.weebs</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="nl-section" id="contact">
+    <div class="nl-blob1"></div>
+    <div class="nl-blob2"></div>
+    <h2 class="nl-title">JOIN THE <span class="nl-accent">SAKURA</span> CLUB</h2>
+    <p class="nl-sub">Early access to drops, exclusive deals & a free sticker on signup 🎁</p>
+    <div class="nl-form">
+        <input type="email" id="nlEmail" placeholder="your@email.com">
+        <button onclick="doSubscribe()">Join</button>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-grid">
+        <div>
+            <div class="f-logo"><span class="fl-rose">✿</span> SAKURA STICKERS</div>
+            <p class="f-desc">Premium anime stickers for every fan. Waterproof, vivid, made to stick around.</p>
+            <div class="f-socials">
+                <span class="f-soc" onclick="showToast('Instagram')">📸</span>
+                <span class="f-soc" onclick="showToast('Twitter')">🐦</span>
+                <span class="f-soc" onclick="showToast('TikTok')">🎵</span>
+                <span class="f-soc" onclick="showToast('Discord')">💬</span>
+            </div>
+        </div>
+        <div>
+            <div class="fc-title">SHOP</div>
+            <ul class="fc-links">
+                <li><a href="#">All Stickers</a></li>
+                <li><a href="#">Starter Pack</a></li>
+                <li><a href="#">Ultimate Pack</a></li>
+                <li><a href="#">New Arrivals</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="fc-title">HELP</div>
+            <ul class="fc-links">
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Shipping</a></li>
+                <li><a href="#">Returns</a></li>
+                <li><a href="#">Track Order</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="fc-title">INFO</div>
+            <ul class="fc-links">
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Wholesale</a></li>
+                <li><a href="#">Custom Orders</a></li>
+                <li><a href="#">Privacy</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="f-bottom">
+        <div class="f-copy">© 2025 SAKURA STICKERS — MADE WITH ✿ FOR ANIME FANS</div>
+        <div class="f-pays">
+            <span class="f-pay">UPI</span>
+            <span class="f-pay">VISA</span>
+            <span class="f-pay">MASTERCARD</span>
+            <span class="f-pay">PAYTM</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ======= DATA =======
+const STICKERS = [
+    {id:1,  name:"Demon Slayer",      series:"Kimetsu no Yaiba",     price:49, badge:"hot",     tags:["hot"]},
+    {id:2,  name:"Naruto Uzumaki",    series:"Naruto",               price:49, badge:"hot",     tags:["hot"]},
+    {id:3,  name:"Gojo Satoru",       series:"Jujutsu Kaisen",       price:59, badge:"new",     tags:["new"]},
+    {id:4,  name:"Mikasa Ackerman",   series:"Attack on Titan",      price:49, badge:"",        tags:[]},
+    {id:5,  name:"Luffy Gear 5",      series:"One Piece",            price:59, badge:"hot",     tags:["hot","new"]},
+    {id:6,  name:"Nezuko Chibi",      series:"Kimetsu no Yaiba",     price:39, badge:"",        tags:["glow"]},
+    {id:7,  name:"Itachi Uchiha",     series:"Naruto Shippuden",     price:49, badge:"limited", tags:["limited"]},
+    {id:8,  name:"Levi Ackerman",     series:"Attack on Titan",      price:59, badge:"hot",     tags:["hot"]},
+    {id:9,  name:"Zero Two",          series:"Darling in FranXX",    price:49, badge:"limited", tags:["limited","glow"]},
+    {id:10, name:"Totoro",            series:"Studio Ghibli",        price:39, badge:"new",     tags:["new","glow"]},
+    {id:11, name:"Sasuke Rinnegan",   series:"Naruto Shippuden",     price:59, badge:"",        tags:["limited"]},
+    {id:12, name:"Chainsaw Man",      series:"Chainsaw Man",         price:59, badge:"new",     tags:["new","hot"]},
+    {id:13, name:"Killua Zoldyck",    series:"Hunter x Hunter",      price:49, badge:"",        tags:[]},
+    {id:14, name:"Saitama OK",        series:"One Punch Man",        price:39, badge:"",        tags:["glow"]},
+    {id:15, name:"Oshi No Ko",        series:"Oshi no Ko",           price:59, badge:"new",     tags:["new"]},
+    {id:16, name:"Marin Kitagawa",    series:"My Dress-Up Darling",  price:59, badge:"hot",     tags:["hot","limited"]},
+    {id:17, name:"Edward Elric",      series:"Fullmetal Alchemist",  price:49, badge:"",        tags:[]},
+    {id:18, name:"Ryuk Shinigami",    series:"Death Note",           price:49, badge:"limited", tags:["limited","glow"]},
+    {id:19, name:"Rem & Ram",         series:"Re:Zero",              price:59, badge:"hot",     tags:["hot"]},
+    {id:20, name:"Yoriichi Tsugikuni",series:"Kimetsu no Yaiba",     price:69, badge:"limited", tags:["limited","hot"]},
+    {id:21, name:"Anime Bundle",      series:"Various Series",       price:79, badge:"new",     tags:["new","hot","glow"]},
+];
+const EMOJIS = ['🎌','⚡','🌸','🔥','💎','🌙','⭐','🎭','👁','🔮','🌊','⚔️','🌀','💫','🎯','🦊','🌺','🐉','🎐','✨','🎆'];
+const DESCS = [
+    "Premium die-cut vinyl sticker. Waterproof and scratch-resistant — perfect for laptops, bottles and more.",
+    "High-gloss laminated finish for vivid colours that last. UV-resistant so they stay bright for years.",
+    "Holographic vinyl with a magical shimmer effect. Catch it in the light for something special.",
+    "Matte-finish collector sticker with subtle texture. A sophisticated addition to any setup.",
+];
+
+let cart = [];
+let modId = null;
+
+// ======= RENDER =======
+function render(filter) {
+    const grid = document.getElementById('sgrid');
+    const list = filter==='all' ? STICKERS : STICKERS.filter(s=>s.tags.includes(filter));
+    grid.innerHTML = '';
+    list.forEach((s,i) => {
+        const card = document.createElement('div');
+        card.className = 's-card';
+        card.style.transitionDelay = (i*0.06)+'s';
+        const bCls = {hot:'b-hot',new:'b-new',limited:'b-ltd'}[s.badge]||'';
+        const bLbl = {hot:'Popular',new:'New In',limited:'Limited'}[s.badge]||'';
+        card.innerHTML = `
+            ${s.badge?`<span class="s-badge ${bCls}">${bLbl}</span>`:''}
+            <div class="s-img-box" onclick="openMod(${s.id})">
+                <img class="s-img" src="${s.id}.png" alt="${s.name}"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="s-fallback">${EMOJIS[s.id-1]}</div>
+            </div>
+            <div class="s-info">
+                <div class="s-num">#${String(s.id).padStart(2,'0')}</div>
+                <div class="s-name">${s.name}</div>
+                <div class="s-series">${s.series}</div>
+                <div class="s-bottom">
+                    <div class="s-price">₹${s.price}</div>
+                    <button class="s-add" onclick="addCart(${s.id},event)">+ Add</button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+        setTimeout(()=>card.classList.add('visible'), 80+i*70);
+    });
+}
+
+function doFilter(f, btn) {
+    document.querySelectorAll('.f-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render(f);
+}
+
+// ======= MODAL =======
+function openMod(id) {
+    modId = id;
+    const s = STICKERS.find(x=>x.id===id);
+    const img = document.getElementById('modImg');
+    img.src = `${id}.png`;
+    img.style.display = 'block';
+    document.getElementById('modName').textContent = s.name;
+    document.getElementById('modSeries').textContent = s.series;
+    document.getElementById('modDesc').textContent = DESCS[id % DESCS.length];
+    document.getElementById('modPrice').textContent = `₹${s.price}`;
+    document.getElementById('modalOv').classList.add('open');
+}
+function closeMod(e) { if(e.target===e.currentTarget) document.getElementById('modalOv').classList.remove('open'); }
+function closeModDirect() { document.getElementById('modalOv').classList.remove('open'); }
+function addModCart() { if(modId){addCart(modId,null);closeModDirect();} }
+
+// ======= CART =======
+function addCart(id, e) {
+    if(e) e.stopPropagation();
+    const s = STICKERS.find(x=>x.id===id);
+    const ex = cart.find(c=>c.id===id);
+    if(ex) ex.qty++;
+    else cart.push({...s, qty:1});
+    updateCart();
+    showToast(`✿ ${s.name} added to cart`);
+}
+function rmCart(id) { cart=cart.filter(c=>c.id!==id); updateCart(); }
+function qtyChange(id,d) {
+    const item=cart.find(c=>c.id===id);
+    if(!item) return;
+    item.qty+=d;
+    if(item.qty<=0) cart=cart.filter(c=>c.id!==id);
+    updateCart();
+}
+function updateCart() {
+    const total = cart.reduce((s,c)=>s+c.price*c.qty,0);
+    const count = cart.reduce((s,c)=>s+c.qty,0);
+    document.getElementById('cartCount').textContent = count;
+    document.getElementById('cartTot').textContent = '₹'+total.toLocaleString('en-IN');
+    const body = document.getElementById('cartBody');
+    const foot = document.getElementById('cartFoot');
+    if(!cart.length) {
+        body.innerHTML = `<div class="c-empty"><span>🛍</span><p>Your cart is empty</p></div>`;
+        foot.style.display='none';
+    } else {
+        foot.style.display='block';
+        body.innerHTML = cart.map(c=>`
+            <div class="c-item">
+                <div class="c-thumb">
+                    <img src="${c.id}.png" alt="${c.name}" onerror="this.style.display='none';this.parentNode.innerHTML+='${EMOJIS[c.id-1]}'">
+                </div>
+                <div class="c-info">
+                    <div class="c-name">${c.name}</div>
+                    <div class="c-price">₹${c.price}</div>
+                    <div class="c-qty">
+                        <button class="q-btn" onclick="qtyChange(${c.id},-1)">−</button>
+                        <span class="q-num">${c.qty}</span>
+                        <button class="q-btn" onclick="qtyChange(${c.id},1)">+</button>
+                    </div>
+                </div>
+                <button class="c-rm" onclick="rmCart(${c.id})">✕</button>
+            </div>
+        `).join('');
+    }
+}
+function toggleCart() {
+    document.getElementById('cartPanel').classList.toggle('open');
+    document.getElementById('cartOv').classList.toggle('open');
+}
+
+// ======= TOAST =======
+function showToast(msg) {
+    const t=document.getElementById('toast');
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ======= NEWSLETTER =======
+function doSubscribe() {
+    const v=document.getElementById('nlEmail').value;
+    if(v&&v.includes('@')) { showToast('✿ Welcome to the Sakura Club!'); document.getElementById('nlEmail').value=''; }
+    else showToast('Please enter a valid email');
+}
+
+// ======= NAV =======
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
+
+// ======= CURSOR =======
+const cur=document.getElementById('cursor');
+const ctr=document.getElementById('ctrail');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function anim(){
+    rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+    ctr.style.left=rx+'px'; ctr.style.top=ry+'px';
+    requestAnimationFrame(anim);
+})();
+
+// ======= REVEAL =======
+new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+}),{threshold:0.1}).observe.bind(
+    new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1})
+);
+const obs = new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ======= INIT =======
+render('all');
+updateCart();
+</script>
+</body>
+</html>
